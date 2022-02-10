@@ -17,6 +17,6 @@ private:
     boost::asio::io_context& context;
     tcp::acceptor acceptor;
 
-    void start_accept();
-    void handle_accept(TcpConnection::pointer new_connection, const boost::system::error_code& error);
+    void startAccept();
+    void handleAccept(TcpConnection::pointer new_connection, const boost::system::error_code& error);
 };

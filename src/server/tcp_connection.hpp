@@ -19,12 +19,12 @@ public:
 
     explicit TcpConnection(boost::asio::io_context& context);
     static pointer create(boost::asio::io_context& context);
-    tcp::socket& get_socket();
+    tcp::socket& getSocket();
     void start();
 
 private:
     std::string message;
     tcp::socket socket;
 
-    static void handle_write(const boost::system::error_code& error, size_t bytes_transferred);
+    void handleWrite(const boost::system::error_code& error, size_t bytesTransferred);
 };

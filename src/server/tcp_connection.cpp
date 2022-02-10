@@ -9,7 +9,7 @@
 
 using boost::asio::ip::tcp;
 
-std::string daytime_string();
+std::string daytimeString();
 
 TcpConnection::TcpConnection(boost::asio::io_context& context)
     : socket(context)
@@ -21,24 +21,24 @@ TcpConnection::pointer TcpConnection::create(boost::asio::io_context& context)
     return TcpConnection::pointer(new TcpConnection(context));
 }
 
-tcp::socket& TcpConnection::get_socket()
+tcp::socket& TcpConnection::getSocket()
 {
     return this->socket;
 }
 
 void TcpConnection::start()
 {
-    this->message = daytime_string();
-    (*void)boost::asio::async_write(
+    this->message = daytimeString();
+    boost::asio::async_write(
         this->socket,
         boost::asio::buffer(this->message),
-        boost::bind(&TcpConnection::handle_write,
+        boost::bind(&TcpConnection::handleWrite,
             shared_from_this(),
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred));
 }
 
-std::string daytime_string()
+std::string daytimeString()
 {
     std::cout << "WAITING" << std::endl;
 
@@ -49,7 +49,7 @@ std::string daytime_string()
     return std::ctime(&now);
 }
 
-void TcpConnection::handle_write(const boost::system::error_code& error, size_t bytes_transferred)
+void TcpConnection::handleWrite(const boost::system::error_code& error, size_t bytesTransferred)
 {
     std::cout << "SENT" << std::endl;
 }
