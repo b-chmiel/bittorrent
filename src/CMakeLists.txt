@@ -1,11 +1,14 @@
 find_package(Boost 1.78.0 REQUIRED)
 
-file(GLOB server_srcs ${CMAKE_CURRENT_SOURCE_DIR}/server/*.cpp)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/server)
+file(GLOB torrent_srcs ${CMAKE_CURRENT_SOURCE_DIR}/torrent/*.cpp)
+file(GLOB cli_srcs ${CMAKE_CURRENT_SOURCE_DIR}/cli/*.cpp)
 
-add_library(libserver SHARED ${server_srcs})
-add_executable(client client.cpp)
-add_executable(server server.cpp)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/torrent)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cli)
 
-target_link_libraries(client ${Boost_LIBRARIES} pthread)
-target_link_libraries(server ${Boost_LIBRARIES} pthread libserver)
+add_library(libclient SHARED ${torrent_srcs})
+add_library(cli SHARED ${cli_srcs})
+
+add_executable(main main.cpp)
+
+target_link_libraries(main ${Boost_LIBRARIES} pthread boost_program_options libclient cli)
