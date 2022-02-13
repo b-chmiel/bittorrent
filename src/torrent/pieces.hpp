@@ -12,7 +12,7 @@ public:
     Pieces(string contents, uint pieceLengthInBytes);
     Pieces() = default;
 
-    const char* toString() const;
+    string toString() const;
     uint pieceLengthInBytes;
 
 private:

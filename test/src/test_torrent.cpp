@@ -7,29 +7,46 @@
 
 BOOST_AUTO_TEST_SUITE(TorrentParser)
 
-BOOST_AUTO_TEST_CASE(Encode)
+using namespace std;
+
+struct Data
 {
-    auto sampleFile = fixtures::read("sample");
+    string fileName;
+    uint pieceLength;
+    uint lengthInBytes;
+    uint creationDate;
+};
+
+void test(const Data& data)
+{
+    auto sampleFile = fixtures::read(data.fileName);
     auto info = torrent::Info {
-        .pieces = torrent::Pieces(sampleFile, 262144),
-        .fileName = "sample",
-        .lengthInBytes = 512
+        .pieces = torrent::Pieces(sampleFile, data.pieceLength),
+        .fileName = data.fileName,
+        .lengthInBytes = data.lengthInBytes
     };
 
-    auto announce = "http://127.0.0.1:9999";
-    auto announceList = std::nullopt;
-    auto creationDate = 1644522607;
-    auto comment = std::nullopt;
+    auto announce = "http://127.0.0.1:6969/announce";
+    auto announceList = nullopt;
+    auto creationDate = data.creationDate;
+    auto comment = nullopt;
     auto createdBy = "Enhanced-CTorrent/dnh3.3.2";
 
     torrent::Torrent file(info, announce, announceList, creationDate, comment, createdBy);
 
-    std::vector<std::string> actual;
+    vector<string> actual;
     boost::split(actual, file.toString(), boost::is_any_of(":"));
 
-    std::vector<std::string> expected;
-    boost::split(expected, fixtures::read("sample.torrent"), boost::is_any_of(":"));
+    vector<string> expected;
+    boost::split(expected, fixtures::read(data.fileName + string(".torrent")), boost::is_any_of(":"));
     BOOST_CHECK_EQUAL_COLLECTIONS(actual.begin(), actual.end(), expected.begin(), expected.end());
+}
+
+BOOST_AUTO_TEST_CASE(Encode)
+{
+    test({ .fileName = "sample16M", .pieceLength = 262144, .lengthInBytes = 16777216, .creationDate = 1644744842 });
+    test({ .fileName = "sample", .pieceLength = 262144, .lengthInBytes = 512, .creationDate = 1644712129 });
+    test({ .fileName = "sample_odd_blocks", .pieceLength = 262144, .lengthInBytes = 12428588, .creationDate = 1644748464 });
 }
 
 BOOST_AUTO_TEST_SUITE_END()

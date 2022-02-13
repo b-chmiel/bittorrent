@@ -1,39 +1,58 @@
-#include "encoding.hpp"
+#include "bencoding/bencoding.hpp"
 #include <boost/test/unit_test.hpp>
 #include <set>
 #include <string>
 #include <vector>
 
-using namespace torrent;
+using namespace torrent::bencoding;
 using namespace std;
 
 BOOST_AUTO_TEST_SUITE(BencodingEncoding)
 
 BOOST_AUTO_TEST_CASE(EncodeStrings)
 {
-    BOOST_CHECK_EQUAL(Encoding::encode("announce"), "8:announce");
-    BOOST_CHECK_EQUAL(Encoding::encode(""), "0:");
+    Bencoding::TorrentDict result = {
+        { "announce", "asdf.asdf" },
+        { "empty", "" },
+    };
+    BOOST_CHECK_EQUAL(Bencoding::encode(result), "d8:announce9:asdf.asdf5:empty0:e");
 }
 
 BOOST_AUTO_TEST_CASE(EncodeIntegers)
 {
-    BOOST_CHECK_EQUAL(Encoding::encode(123512), "i123512e");
-    BOOST_CHECK_EQUAL(Encoding::encode(-123512), "i-123512e");
-    BOOST_CHECK_EQUAL(Encoding::encode(-0), "i0e");
-    BOOST_CHECK_EQUAL(Encoding::encode(0), "i0e");
+    Bencoding::TorrentDict result = {
+        { "num", 123u },
+        { "zero", 0u },
+    };
+
+    BOOST_CHECK_EQUAL(Bencoding::encode(result), "d3:numi123e4:zeroi0ee");
 }
 
 BOOST_AUTO_TEST_CASE(EncodeLists)
 {
-    BOOST_CHECK_EQUAL(Encoding::encode(vector<string> { "spam", "eggs" }), "l4:spam4:eggse");
-    BOOST_CHECK_EQUAL(Encoding::encode(vector<string> {}), "le");
-    BOOST_CHECK_EQUAL(Encoding::encode(vector<string> { "e", "e", "e", "e" }), "l1:e1:e1:e1:ee");
-    BOOST_CHECK_EQUAL(Encoding::encode(vector<string> { "1", "2" }), "l1:11:2e");
+    vector<string> vec = { "spam", "eggs" };
+    vector<string> vecEmpty = {};
+
+    Bencoding::TorrentDict result = {
+        { "vector", vec },
+        { "vectorEmpty", vecEmpty },
+    };
+
+    BOOST_CHECK_EQUAL(Bencoding::encode(result), "d6:vectorl4:spam4:eggse11:vectorEmptylee");
 }
 
 BOOST_AUTO_TEST_CASE(EncodeDictionaries)
 {
-    BOOST_FAIL(false);
+    typedef map<string, variant<string, uint>> map_var;
+    map_var mapStr = { { "one", "one" }, { "two", "two" } };
+    map_var mapInt = { { "one", 1u }, { "two", 2u } };
+
+    Bencoding::TorrentDict result = {
+        { "str", mapStr },
+        { "int", mapInt },
+    };
+
+    BOOST_CHECK_EQUAL(Bencoding::encode(result), "d3:intd3:onei1e3:twoi2ee3:strd3:one3:one3:two3:twoee");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

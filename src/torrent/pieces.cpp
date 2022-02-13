@@ -1,5 +1,6 @@
 #include "pieces.hpp"
 #include <boost/uuid/detail/sha1.hpp>
+#include <cmath>
 #include <string>
 
 using namespace std;
@@ -13,15 +14,16 @@ string sha1(const string& str)
     unsigned hash[5] = { 0 };
     sha1.get_digest(hash);
 
-    // Back to string
-    char buf[41] = { 0 };
-
-    for (int i = 0; i < 5; i++)
+    string result = "";
+    for (const auto ch : hash)
     {
-        std::sprintf(buf + (i << 3), "%08x", hash[i]);
+        for (int j = sizeof(hash[0]) - 1; j >= 0; j--)
+        {
+            result += (char)((ch & (255 << j * 8)) >> j * 8);
+        }
     }
 
-    return std::string(buf);
+    return move(result);
 }
 
 Pieces::Pieces(string fileContents, uint pieceLengthInBytes)
@@ -29,28 +31,16 @@ Pieces::Pieces(string fileContents, uint pieceLengthInBytes)
     auto i = 0;
     string result = "";
     string piece;
-    for (const auto ch : fileContents)
+    for (int i = 0; i < fileContents.size(); i += pieceLengthInBytes)
     {
-        if (i % pieceLengthInBytes == 0)
-        {
-            piece = "";
-
-            if (i == 0)
-                continue;
-
-            result += sha1(piece);
-        }
-
-        piece += ch;
-        i++;
+        result += sha1(fileContents.substr(i, pieceLengthInBytes));
     }
 
-    result += sha1(piece);
     this->pieceLengthInBytes = pieceLengthInBytes;
     this->concatenatedHashes = move(result);
 }
 
-const char* Pieces::toString() const
+string Pieces::toString() const
 {
-    return this->concatenatedHashes.data();
+    return this->concatenatedHashes;
 }

@@ -1,5 +1,5 @@
 #include "torrent.hpp"
-#include "encoding.hpp"
+#include "bencoding/bencoding.hpp"
 #include <iostream>
 #include <map>
 #include <optional>
@@ -30,7 +30,7 @@ Torrent::Torrent(const string& content)
 
 string Torrent::toString() const
 {
-    Encoding::TorrentDict result = {
+    bencoding::Bencoding::TorrentDict result = {
         { "info", getInfoMap() },
         { "announce", this->announce },
     };
@@ -55,7 +55,7 @@ string Torrent::toString() const
         result["announce-list"] = this->announceList.value();
     }
 
-    return move(Encoding::encode(result));
+    return move(bencoding::Bencoding::encode(result));
 }
 
 map<string, variant<string, uint>> Torrent::getInfoMap() const
