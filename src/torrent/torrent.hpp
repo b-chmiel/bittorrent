@@ -1,26 +1,26 @@
 #pragma once
 
+#include "bencoding/bencoding.hpp"
 #include "pieces.hpp"
 #include <map>
-#include <optional>
 #include <string>
 #include <variant>
 #include <vector>
 
 namespace torrent
 {
-using namespace std;
 struct Info
 {
     Pieces pieces;
-    string fileName;
+    std::string fileName;
     uint lengthInBytes;
+    friend auto operator<=>(const Info&, const Info&) = default;
 };
 
 struct File
 {
     uint lengthInBytes;
-    vector<string> path;
+    std::vector<std::string> path;
 };
 
 class Torrent
@@ -28,24 +28,25 @@ class Torrent
 public:
     explicit Torrent(
         const Info& info,
-        const string& announce,
-        const optional<vector<string>>& announceList,
-        const optional<uint>& creationDate,
-        const optional<string>& comment,
-        const optional<string>& createdBy);
+        const std::string& announce,
+        const std::vector<std::string>& announceList,
+        const uint& creationDate,
+        const std::string& comment,
+        const std::string& createdBy);
 
-    explicit Torrent(const string& fileContent);
+    explicit Torrent(const std::string& fileContent);
 
-    string toString() const;
+    friend auto operator<=>(const Torrent&, const Torrent&) = default;
+    std::string toString() const;
 
 private:
     Info info;
-    string announce;
-    optional<vector<string>> announceList;
-    optional<uint> creationDate;
-    optional<string> comment;
-    optional<string> createdBy;
+    std::string announce;
+    std::vector<std::string> announceList;
+    uint creationDate;
+    std::string comment;
+    std::string createdBy;
 
-    map<string, variant<string, uint>> getInfoMap() const;
+    bencoding::Bencoding getInfoMap() const;
 };
 }

@@ -26,6 +26,11 @@ string sha1(const string& str)
     return move(result);
 }
 
+Pieces::Pieces(const std::string& concatenatedHashes)
+    : concatenatedHashes(concatenatedHashes)
+{
+}
+
 Pieces::Pieces(string fileContents, uint pieceLengthInBytes)
 {
     auto i = 0;

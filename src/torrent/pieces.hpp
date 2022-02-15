@@ -4,18 +4,18 @@
 
 namespace torrent
 {
-using namespace std;
-
 class Pieces
 {
 public:
-    Pieces(string contents, uint pieceLengthInBytes);
+    Pieces(std::string contents, uint pieceLengthInBytes);
+    Pieces(const std::string& concatenatedHashes);
     Pieces() = default;
 
-    string toString() const;
+    std::string toString() const;
     uint pieceLengthInBytes;
+    friend auto operator<=>(const Pieces&, const Pieces&) = default;
 
 private:
-    string concatenatedHashes;
+    std::string concatenatedHashes;
 };
 }
