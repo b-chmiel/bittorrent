@@ -39,7 +39,6 @@ public:
     friend auto operator<=>(const Torrent&, const Torrent&) = default;
     std::string toString() const;
 
-private:
     Info info;
     std::string announce;
     std::vector<std::string> announceList;
@@ -47,6 +46,7 @@ private:
     std::string comment;
     std::string createdBy;
 
+private:
     bencoding::Bencoding getInfoMap() const;
 };
 }

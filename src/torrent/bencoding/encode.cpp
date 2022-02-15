@@ -1,75 +1,58 @@
-// #include "bencoding.hpp"
-// #include <set>
-// #include <string>
-// #include <variant>
+#include "bencoding.hpp"
 
-// using namespace std;
-// using namespace torrent::bencoding;
+using namespace torrent::bencoding;
 
-// string encode(const string& str);
-// string encode(uint number);
-// string encode(int number);
-// string encode(const vector<string>& vector);
-// string encode(const map<string, variant<string, uint>>& dict);
+class EncodeVisitor : public boost::static_visitor<std::string>
+{
+public:
+    std::string encode(const std::string& str) const
+    {
+        return std::to_string(str.length()) + ":" + str;
+    }
 
-// struct Encode
-// {
-//     template <typename T>
-//     decltype(auto) operator()(T x)
-//     {
-//         return encode(x);
-//     }
-// };
+    std::string encode(uint number) const
+    {
+        return "i" + std::to_string(number) + "e";
+    }
 
-// string encode(const string& str)
-// {
-//     return to_string(str.length()) + ":" + str;
-// }
+    std::string encode(const Bencoding& var) const
+    {
+        return boost::apply_visitor(EncodeVisitor(), var.data);
+    }
 
-// string encode(uint number)
-// {
-//     return "i" + to_string(number) + "e";
-// }
+    std::string encode(const recursive_map& dict) const
+    {
+        std::string result = "d";
+        for (const auto& [key, value] : dict)
+        {
+            result += encode(key);
+            result += encode(value.get());
+        }
+        result += "e";
 
-// string encode(int number)
-// {
-//     return "i" + to_string(number) + "e";
-// }
+        return result;
+    }
 
-// string encode(const vector<string>& vector)
-// {
-//     string result = "l";
-//     for (const auto& el : vector)
-//     {
-//         result += encode(el);
-//     }
-//     result += "e";
+    std::string encode(const recursive_vector& vector) const
+    {
+        std::string result = "l";
+        for (const auto& el : vector)
+        {
+            result += encode(el.get());
+        }
+        result += "e";
 
-//     return result;
-// }
+        return result;
+    }
 
-// string encode(const map<string, variant<string, uint>>& dict)
-// {
-//     string result = "d";
-//     for (const auto& [key, value] : dict)
-//     {
-//         result += encode(key);
-//         result += visit(Encode(), value);
-//     }
-//     result += "e";
+    template <typename T>
+    decltype(auto) operator()(T x) const
+    {
+        return encode(x);
+    }
+};
 
-//     return result;
-// }
-
-// string Bencoding::encode(const Bencoding::TorrentDict& dict)
-// {
-//     string result = "d";
-//     for (const auto& [key, value] : dict)
-//     {
-//         result += encode(key);
-//         result += visit(Encode(), value);
-//     }
-//     result += "e";
-
-//     return move(result);
-// }
+std::string Bencoding::toString() const
+{
+    return boost::apply_visitor(EncodeVisitor(), this->data);
+}

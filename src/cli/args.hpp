@@ -13,6 +13,13 @@ enum class Option
     OUTPUT
 };
 
+enum class CliMode
+{
+    HELP,
+    CREATE_FILE,
+    SEED
+};
+
 class Args
 {
 public:
@@ -21,5 +28,6 @@ public:
     std::string input;
     std::string clientUrl;
     std::string output;
+    CliMode mode;
 };
 }

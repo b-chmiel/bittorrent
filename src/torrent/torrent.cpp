@@ -8,7 +8,13 @@
 using namespace std;
 using namespace torrent;
 
-Torrent::Torrent(const Info& info, const string& announce, const vector<string>& announceList, const uint& creationDate, const string& comment, const string& createdBy)
+Torrent::Torrent(
+    const Info& info,
+    const string& announce,
+    const vector<string>& announceList,
+    const uint& creationDate,
+    const string& comment,
+    const string& createdBy)
     : info(info)
     , announce(announce)
     , announceList(announceList)

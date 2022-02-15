@@ -3,10 +3,33 @@
 #include <cmath>
 #include <string>
 
-using namespace std;
 using namespace torrent;
 
-string sha1(const string& str)
+Pieces::Pieces(const std::string& concatenatedHashes)
+    : concatenatedHashes(concatenatedHashes)
+{
+}
+
+Pieces::Pieces(std::string fileContents, uint pieceLengthInBytes)
+{
+    auto i = 0;
+    std::string result {};
+    std::string piece {};
+    for (int i = 0; i < fileContents.size(); i += pieceLengthInBytes)
+    {
+        result += sha1(fileContents.substr(i, pieceLengthInBytes));
+    }
+
+    this->pieceLengthInBytes = pieceLengthInBytes;
+    this->concatenatedHashes = std::move(result);
+}
+
+std::string Pieces::toString() const
+{
+    return this->concatenatedHashes;
+}
+
+std::string Pieces::sha1(const std::string& str) const
 {
     // https://stackoverflow.com/questions/28489153/how-to-portably-compute-a-sha1-hash-in-c
     boost::uuids::detail::sha1 sha1;
@@ -14,7 +37,7 @@ string sha1(const string& str)
     unsigned hash[5] = { 0 };
     sha1.get_digest(hash);
 
-    string result = "";
+    std::string result {};
     for (const auto ch : hash)
     {
         for (int j = sizeof(hash[0]) - 1; j >= 0; j--)
@@ -23,29 +46,5 @@ string sha1(const string& str)
         }
     }
 
-    return move(result);
-}
-
-Pieces::Pieces(const std::string& concatenatedHashes)
-    : concatenatedHashes(concatenatedHashes)
-{
-}
-
-Pieces::Pieces(string fileContents, uint pieceLengthInBytes)
-{
-    auto i = 0;
-    string result = "";
-    string piece;
-    for (int i = 0; i < fileContents.size(); i += pieceLengthInBytes)
-    {
-        result += sha1(fileContents.substr(i, pieceLengthInBytes));
-    }
-
-    this->pieceLengthInBytes = pieceLengthInBytes;
-    this->concatenatedHashes = move(result);
-}
-
-string Pieces::toString() const
-{
-    return this->concatenatedHashes;
+    return std::move(result);
 }

@@ -1,4 +1,4 @@
-#include "parse_args.hpp"
+#include "args.hpp"
 #include <boost/program_options.hpp>
 #include <iostream>
 #include <map>
@@ -33,10 +33,19 @@ Args::Args(int ac, char** av)
 
     if (vm.count(optionNames.at(Option::HELP)))
     {
+        this->mode = CliMode::HELP;
         std::cout << description << "\n";
+        return;
+    }
+    else if (ac == 2)
+    {
+        this->mode = CliMode::SEED;
+        this->input = av[1];
+        return;
     }
     else
     {
+        this->mode = CliMode::CREATE_FILE;
         this->input = "";
         this->clientUrl = "http://127.0.0.1:9999";
         this->output = "";

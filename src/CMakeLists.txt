@@ -1,17 +1,8 @@
 find_package(Boost 1.78.0 REQUIRED)
 
-file(GLOB torrent_srcs ${CMAKE_CURRENT_SOURCE_DIR}/torrent/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/torrent/bencoding/*.cpp)
-file(GLOB cli_srcs ${CMAKE_CURRENT_SOURCE_DIR}/cli/*.cpp)
-file(GLOB utils_srcs ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp)
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/torrent)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/torrent/bencoding)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/utils)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cli)
-
-add_library(torrent SHARED ${torrent_srcs})
-add_library(cli SHARED ${cli_srcs})
-add_library(utils SHARED ${utils_srcs})
+add_subdirectory(torrent)
+add_subdirectory(utils)
+add_subdirectory(cli)
 
 add_executable(main main.cpp)
 

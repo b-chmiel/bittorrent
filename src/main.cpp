@@ -1,7 +1,8 @@
-#include "cli/parse_args.hpp"
+#include "cli/args.hpp"
+#include "cli/handler.hpp"
 #include "torrent/pieces.hpp"
 #include "torrent/torrent.hpp"
-#include "utils.hpp"
+#include "utils/utils.hpp"
 #include <exception>
 #include <iostream>
 
@@ -12,25 +13,16 @@ int main(int ac, char** av)
     try
     {
         cli::Args input(ac, av);
-        cout << input.input << endl;
-        cout << input.clientUrl << endl;
-        cout << input.output << endl;
-
-        auto sampleFile = utils::readFile(input.input);
-        auto info = torrent::Info {
-            .pieces = torrent::Pieces(sampleFile, 262144),
-            .fileName = input.input,
-            .lengthInBytes = 512
-        };
-
-        auto announce = input.clientUrl;
-        auto announceList = vector<std::string>();
-        auto creationDate = 1644522607;
-        auto comment = "";
-        auto createdBy = "Enhanced-CTorrent/dnh3.3.2";
-
-        torrent::Torrent file(info, announce, announceList, creationDate, comment, createdBy);
-        utils::saveFile(file.toString(), input.output);
+        switch (input.mode)
+        {
+        case cli::CliMode::CREATE_FILE:
+            cli::Handler::createFile(input);
+            break;
+        case cli::CliMode::SEED:
+            cli::Handler::seed(input);
+        case cli::CliMode::HELP:
+            break;
+        }
     }
     catch (exception& e)
     {
