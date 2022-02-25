@@ -1,18 +1,21 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 project(BitTorrent)
 
-set(CMAKE_CXX_STANDARD 23)
-# add_compile_options(-Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Wcast-align -Wold-style-cast -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2 -Wlifetime -Weverything)
-
-include(CheckTypeSize)
-check_type_size("uint" UINT)
-if ("${UINT}" STREQUAL "")
-	message(FATAL_ERROR "uint must be available.")
+set(CMAKE_CXX_STANDARD 20)
+set(common_flags -fdiagnostics-color=always -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Wcast-align -Wold-style-cast -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wnull-dereference -Wdouble-promotion -Wformat=2)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	add_compile_options(${common_flags} -fcolor-diagnostics)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	add_compile_options(${common_flags} -Wuseless-cast -Wlogical-op -Wduplicated-branches -Wduplicated-cond) 
 endif()
 
-add_subdirectory(src)
-add_subdirectory(test)
-
+find_package(Boost 1.78.0 REQUIRED)
+find_package(Boost REQUIRED COMPONENTS unit_test_framework filesystem)
 include(cmake/CPM.cmake)
 CPMAddPackage("gh:boostorg/uuid#boost-1.78.0")
 CPMAddPackage("gh:boostorg/variant#boost-1.78.0")
+CPMAddPackage("gh:gabime/spdlog@1.9.2")
+
+enable_testing()
+add_subdirectory(src)
+add_subdirectory(test)

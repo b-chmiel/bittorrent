@@ -9,14 +9,14 @@
 #include <string>
 #include <vector>
 
-using namespace torrent::bencoding;
+using namespace utils::bencoding;
 
 Bencoding::Bencoding()
     : data(recursive_map())
 {
 }
 
-Bencoding::Bencoding(uint data)
+Bencoding::Bencoding(int data)
     : data(data)
 {
 }
@@ -72,11 +72,11 @@ Bencoding Bencoding::operator[](const std::string& key) const
     return Bencoding();
 }
 
-Bencoding::operator uint() const
+Bencoding::operator int() const
 {
-    if (this->data.type() == typeid(uint))
+    if (this->data.type() == typeid(int))
     {
-        return boost::get<uint>(this->data);
+        return boost::get<int>(this->data);
     }
 
     return 0u;

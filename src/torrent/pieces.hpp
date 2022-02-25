@@ -7,12 +7,12 @@ namespace torrent
 class Pieces
 {
 public:
-    Pieces(std::string contents, uint pieceLengthInBytes);
+    Pieces(std::string contents, int pieceLengthInBytes);
     Pieces(const std::string& concatenatedHashes);
     Pieces() = default;
 
     std::string toString() const;
-    uint pieceLengthInBytes;
+    int pieceLengthInBytes;
     friend auto operator<=>(const Pieces&, const Pieces&) = default;
 
 private:

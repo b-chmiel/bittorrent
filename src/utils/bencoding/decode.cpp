@@ -1,9 +1,10 @@
 #include "bencoding.hpp"
 #include <boost/variant.hpp>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
-using namespace torrent::bencoding;
+using namespace utils::bencoding;
 
 Bencoding decodeString(std::string& str)
 {
@@ -35,7 +36,7 @@ Bencoding decodeString(std::string& str)
         str.erase(0, 1);
     }
 
-    return std::move(Bencoding(result));
+    return Bencoding(result);
 }
 
 Bencoding decodeInt(std::string& str)
@@ -54,7 +55,7 @@ Bencoding decodeInt(std::string& str)
     }
 
     str.erase(0, 1);
-    return std::move(Bencoding(stoi(result)));
+    return Bencoding(stoi(result));
 }
 
 Bencoding decodeItem(std::string& str);
@@ -67,7 +68,6 @@ Bencoding decodeList(std::string& str)
     while (!str.empty() && str[0] != 'e')
     {
         result.emplace_back(decodeItem(str));
-//        str.erase(0, 1);
     }
 
     if (str[0] != 'e')
@@ -78,7 +78,7 @@ Bencoding decodeList(std::string& str)
     str.erase(0, 1);
 
     Bencoding r(result);
-    return std::move(Bencoding(result));
+    return Bencoding(result);
 }
 
 Bencoding decodeDict(std::string& str)
@@ -99,7 +99,7 @@ Bencoding decodeDict(std::string& str)
     }
     str.erase(0, 1);
 
-    return std::move(result);
+    return result;
 }
 
 Bencoding decodeItem(std::string& str)
@@ -129,7 +129,7 @@ Bencoding decodeItem(std::string& str)
     case '9':
         return decodeString(str);
     default:
-        throw std::runtime_error("Cannot decode torrent file.");
+        throw std::runtime_error("Cannot decode bencoded item: " + str);
     }
 }
 

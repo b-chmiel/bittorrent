@@ -1,4 +1,4 @@
-#include "utils.hpp"
+#include "file.hpp"
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -6,8 +6,9 @@
 #include <vector>
 
 using namespace std;
+using namespace utils;
 
-string utils::readFile(const string& fileName)
+string file::readFile(const string& fileName)
 {
     ifstream t(fileName);
     if (t.fail())
@@ -20,7 +21,7 @@ string utils::readFile(const string& fileName)
     return buffer.str();
 }
 
-void utils::saveFile(const string& content, const string& fileName)
+void file::saveFile(const string& content, const string& fileName)
 {
     ofstream file;
     file.open(fileName);

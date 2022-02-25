@@ -1,10 +1,10 @@
-#include "torrent/bencoding/bencoding.hpp"
+#include "utils/utils.hpp"
 #include <boost/test/unit_test.hpp>
 #include <set>
 #include <string>
 #include <vector>
 
-using namespace torrent::bencoding;
+using namespace utils::bencoding;
 using namespace std;
 
 BOOST_AUTO_TEST_SUITE(BencodingEncoding)

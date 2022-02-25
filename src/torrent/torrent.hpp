@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bencoding/bencoding.hpp"
+#include "../utils/utils.hpp"
 #include "pieces.hpp"
 #include <map>
 #include <string>
@@ -13,13 +13,13 @@ struct Info
 {
     Pieces pieces;
     std::string fileName;
-    uint lengthInBytes;
+    int lengthInBytes;
     friend auto operator<=>(const Info&, const Info&) = default;
 };
 
 struct File
 {
-    uint lengthInBytes;
+    int lengthInBytes;
     std::vector<std::string> path;
 };
 
@@ -30,7 +30,7 @@ public:
         const Info& info,
         const std::string& announce,
         const std::vector<std::string>& announceList,
-        const uint& creationDate,
+        const int creationDate,
         const std::string& comment,
         const std::string& createdBy);
 
@@ -38,15 +38,13 @@ public:
 
     friend auto operator<=>(const Torrent&, const Torrent&) = default;
     std::string toString() const;
+    utils::bencoding::Bencoding getInfoMap() const;
 
     Info info;
     std::string announce;
     std::vector<std::string> announceList;
-    uint creationDate;
+    int creationDate;
     std::string comment;
     std::string createdBy;
-
-private:
-    bencoding::Bencoding getInfoMap() const;
 };
 }

@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace torrent::bencoding
+namespace utils::bencoding
 {
 class Bencoding;
 
@@ -18,14 +18,14 @@ typedef boost::variant<
     recursive_map,
     recursive_vector,
     std::string,
-    uint>
+    int>
     BencodingData;
 
 class Bencoding
 {
 public:
     Bencoding();
-    Bencoding(uint);
+    Bencoding(int);
     Bencoding(const std::string&);
     Bencoding(const std::vector<std::string>&);
     Bencoding(const std::vector<Bencoding>& vec);
@@ -33,7 +33,7 @@ public:
     std::string toString() const;
     void insert(const std::string& key, const Bencoding&);
 
-    explicit operator uint() const;
+    explicit operator int() const;
     explicit operator std::string() const;
     explicit operator std::vector<std::string>() const;
 

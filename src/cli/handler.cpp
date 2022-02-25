@@ -1,5 +1,6 @@
 #include "handler.hpp"
 #include "../torrent/torrent.hpp"
+#include "../tracker/client.hpp"
 #include "../utils/utils.hpp"
 #include "args.hpp"
 #include <iostream>
@@ -18,7 +19,7 @@ void Handler::createFile(const Args& input)
     std::cout << input.clientUrl << std::endl;
     std::cout << input.output << std::endl;
 
-    auto sampleFile = utils::readFile(input.input);
+    auto sampleFile = utils::file::readFile(input.input);
     auto info = torrent::Info {
         .pieces = torrent::Pieces(sampleFile, 262144),
         .fileName = input.input,
@@ -32,12 +33,12 @@ void Handler::createFile(const Args& input)
     auto createdBy = "Bittorrent";
 
     torrent::Torrent file(info, announce, announceList, creationDate, comment, createdBy);
-    utils::saveFile(file.toString(), input.output);
+    utils::file::saveFile(file.toString(), input.output);
 }
 
 void Handler::seed(const Args& input)
 {
-    torrent::Torrent torrent(utils::readFile(input.input));
+    torrent::Torrent torrent(utils::file::readFile(input.input));
 
     std::cout << "Announce: " << torrent.announce << std::endl;
     std::cout << "Comment: " << torrent.comment << std::endl;
@@ -45,4 +46,6 @@ void Handler::seed(const Args& input)
     std::cout << "Creation date: " << torrent.creationDate << std::endl;
     std::cout << "Info: filename: " << torrent.info.fileName << std::endl;
     std::cout << "Info: lengthInBytes: " << torrent.info.lengthInBytes << std::endl;
+
+    tracker::Client client(torrent);
 }

@@ -10,14 +10,14 @@ using namespace std;
 struct Data
 {
     string fileName;
-    uint pieceLength;
-    uint lengthInBytes;
-    uint creationDate;
+    int pieceLength;
+    int lengthInBytes;
+    int creationDate;
 };
 
 void test_encode(const Data& data)
 {
-    auto sampleFile = utils::readFile("fixtures/" + data.fileName);
+    auto sampleFile = utils::file::readFile("fixtures/" + data.fileName);
     auto info = torrent::Info {
         .pieces = torrent::Pieces(sampleFile, data.pieceLength),
         .fileName = data.fileName,
@@ -32,8 +32,8 @@ void test_encode(const Data& data)
 
     torrent::Torrent file(info, announce, announceList, creationDate, comment, createdBy);
 
-    auto actual = utils::split(file.toString(), ":");
-    auto expected = utils::split(utils::readFile("fixtures/" + data.fileName + string(".torrent")), ":");
+    auto actual = utils::str::split(file.toString(), ":");
+    auto expected = utils::str::split(utils::file::readFile("fixtures/" + data.fileName + string(".torrent")), ":");
     BOOST_CHECK_EQUAL_COLLECTIONS(actual.begin(), actual.end(), expected.begin(), expected.end());
 }
 
@@ -47,10 +47,10 @@ BOOST_AUTO_TEST_CASE(Encode)
 void test_decode(const Data& data)
 {
     auto fileName = "fixtures/" + data.fileName + ".torrent";
-    torrent::Torrent actual(utils::readFile(fileName));
+    torrent::Torrent actual(utils::file::readFile(fileName));
 
     auto info = torrent::Info {
-        .pieces = torrent::Pieces(utils::readFile("fixtures/" + data.fileName), data.pieceLength),
+        .pieces = torrent::Pieces(utils::file::readFile("fixtures/" + data.fileName), data.pieceLength),
         .fileName = data.fileName,
         .lengthInBytes = data.lengthInBytes
     };

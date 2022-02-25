@@ -1,4 +1,3 @@
-#include "torrent/bencoding/bencoding.hpp"
 #include "utils/utils.hpp"
 #include <boost/test/unit_test.hpp>
 #include <set>
@@ -6,14 +5,14 @@
 #include <string>
 #include <vector>
 
-using namespace torrent::bencoding;
+using namespace utils::bencoding;
 using namespace std;
 
 BOOST_AUTO_TEST_SUITE(BencodingDecode)
 
 BOOST_AUTO_TEST_CASE(StringSuccess)
 {
-    auto bencoded = Bencoding::Bencoding::decode("8:contents");
+    auto bencoded = Bencoding::decode("8:contents");
     BOOST_CHECK_EQUAL(static_cast<string>(bencoded), "contents");
 }
 
@@ -31,10 +30,10 @@ BOOST_AUTO_TEST_CASE(StringFailure)
 BOOST_AUTO_TEST_CASE(IntSuccess)
 {
     auto bencoded = Bencoding::Bencoding::decode("i234e");
-    BOOST_CHECK_EQUAL(static_cast<uint>(bencoded), 234u);
+    BOOST_CHECK_EQUAL(static_cast<int>(bencoded), 234u);
 
     bencoded = Bencoding::Bencoding::decode("i0e");
-    BOOST_CHECK_EQUAL(static_cast<uint>(bencoded), 0u);
+    BOOST_CHECK_EQUAL(static_cast<int>(bencoded), 0u);
 }
 
 BOOST_AUTO_TEST_CASE(IntFailure)

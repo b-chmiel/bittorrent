@@ -1,6 +1,6 @@
 #include "bencoding.hpp"
 
-using namespace torrent::bencoding;
+using namespace utils::bencoding;
 
 class EncodeVisitor : public boost::static_visitor<std::string>
 {
@@ -10,7 +10,7 @@ public:
         return std::to_string(str.length()) + ":" + str;
     }
 
-    std::string encode(uint number) const
+    std::string encode(int number) const
     {
         return "i" + std::to_string(number) + "e";
     }

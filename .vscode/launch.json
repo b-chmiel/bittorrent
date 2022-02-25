@@ -5,16 +5,18 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "clang++ - Build and debug active file",
+			"name": "Main",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${fileDirname}/${fileBasenameNoExtension}",
-			"args": [],
+			"program": "${workspaceFolder}/build/src/main",
+			"args": [
+				"${workspaceFolder}/test/fixtures/sample.torrent"
+			],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
 			"environment": [],
 			"externalConsole": false,
-			"MIMode": "lldb",
+			"MIMode": "gdb",
 			"setupCommands": [
 				{
 					"description": "Enable pretty-printing for gdb",
@@ -22,8 +24,27 @@
 					"ignoreFailures": true
 				}
 			],
-			"preLaunchTask": "C/C++: clang++ build active file",
-			"miDebuggerPath": "/usr/bin/lldb-mi"
+			"preLaunchTask": "BuildMain"
+		},
+		{
+			"name": "Test",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/build/test/test",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			],
+			"preLaunchTask": "BuildTest"
 		}
 	]
 }

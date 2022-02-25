@@ -1,5 +1,5 @@
 #include "pieces.hpp"
-#include <boost/uuid/detail/sha1.hpp>
+#include "../utils/utils.hpp"
 #include <cmath>
 #include <string>
 
@@ -10,14 +10,14 @@ Pieces::Pieces(const std::string& concatenatedHashes)
 {
 }
 
-Pieces::Pieces(std::string fileContents, uint pieceLengthInBytes)
+Pieces::Pieces(std::string fileContents, int pieceLengthInBytes)
 {
-    auto i = 0;
+    const auto pieceLength = static_cast<size_t>(pieceLengthInBytes);
     std::string result {};
     std::string piece {};
-    for (int i = 0; i < fileContents.size(); i += pieceLengthInBytes)
+    for (size_t i = 0; i < fileContents.size(); i += pieceLength)
     {
-        result += sha1(fileContents.substr(i, pieceLengthInBytes));
+        result += utils::sha::sha1(fileContents.substr(i, pieceLength));
     }
 
     this->pieceLengthInBytes = pieceLengthInBytes;
@@ -27,24 +27,4 @@ Pieces::Pieces(std::string fileContents, uint pieceLengthInBytes)
 std::string Pieces::toString() const
 {
     return this->concatenatedHashes;
-}
-
-std::string Pieces::sha1(const std::string& str) const
-{
-    // https://stackoverflow.com/questions/28489153/how-to-portably-compute-a-sha1-hash-in-c
-    boost::uuids::detail::sha1 sha1;
-    sha1.process_bytes(str.data(), str.size());
-    unsigned hash[5] = { 0 };
-    sha1.get_digest(hash);
-
-    std::string result {};
-    for (const auto ch : hash)
-    {
-        for (int j = sizeof(hash[0]) - 1; j >= 0; j--)
-        {
-            result += (char)((ch & (255 << j * 8)) >> j * 8);
-        }
-    }
-
-    return std::move(result);
 }

@@ -79,6 +79,7 @@
 		"valarray": "cpp",
 		"variant": "cpp",
 		"*.inc": "cpp",
-		"ciso646": "cpp"
+		"ciso646": "cpp",
+		"shared_mutex": "cpp"
 	}
 }
