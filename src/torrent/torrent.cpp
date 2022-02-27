@@ -1,8 +1,6 @@
 #include "torrent.hpp"
-#include "../utils/utils.hpp"
-#include <boost/variant.hpp>
+#include "../utils/bencoding/bencoding.hpp"
 #include <iostream>
-#include <map>
 #include <string>
 
 using namespace std;

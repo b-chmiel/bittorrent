@@ -1,8 +1,5 @@
 #include "cli/args.hpp"
 #include "cli/handler.hpp"
-#include "torrent/pieces.hpp"
-#include "torrent/torrent.hpp"
-#include "utils/utils.hpp"
 #include <exception>
 #include <iostream>
 

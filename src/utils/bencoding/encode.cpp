@@ -1,4 +1,11 @@
 #include "bencoding.hpp"
+#include <boost/variant/detail/apply_visitor_unary.hpp>
+#include <boost/variant/recursive_wrapper.hpp>
+#include <boost/variant/static_visitor.hpp>
+#include <map>
+#include <string>
+#include <type_traits>
+#include <vector>
 
 using namespace utils::bencoding;
 

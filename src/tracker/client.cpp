@@ -2,8 +2,8 @@
 #include "../torrent/torrent.hpp"
 #include "../utils/utils.hpp"
 #include "http_request/http_request.hpp"
-#include "request.hpp"
-#include "response.hpp"
+#include "tracker_request.hpp"
+#include "tracker_response.hpp"
 #include "utils/id.hpp"
 #include "utils/urlencode.hpp"
 #include <sstream>

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <boost/variant.hpp>
+#include <boost/variant/recursive_wrapper.hpp>
+#include <boost/variant/variant.hpp>
 #include <map>
-#include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 

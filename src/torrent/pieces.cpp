@@ -1,7 +1,8 @@
 #include "pieces.hpp"
-#include "../utils/utils.hpp"
-#include <cmath>
+#include "../utils/sha.hpp"
+#include <stddef.h>
 #include <string>
+#include <utility>
 
 using namespace torrent;
 

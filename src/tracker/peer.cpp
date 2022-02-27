@@ -26,7 +26,7 @@ std::string Peer::urlFromBytes(const std::string& bytes) const
         }
     }
 
-    const int port = (bytes[4] << 8) | bytes[5];
+    const uint16_t port = ((uint8_t)bytes[5]) | ((uint8_t)(bytes[4]) << 8);
 
     return ip + ":" + std::to_string(port);
 }

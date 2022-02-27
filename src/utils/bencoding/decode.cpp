@@ -1,5 +1,6 @@
 #include "bencoding.hpp"
-#include <boost/variant.hpp>
+#include <boost/variant/get.hpp>
+#include <ctype.h>
 #include <stdexcept>
 #include <string>
 #include <vector>

@@ -1,10 +1,8 @@
 #pragma once
 
-#include "../utils/utils.hpp"
+#include "../utils/bencoding/bencoding.hpp"
 #include "pieces.hpp"
-#include <map>
 #include <string>
-#include <variant>
 #include <vector>
 
 namespace torrent

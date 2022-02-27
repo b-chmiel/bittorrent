@@ -1,10 +1,8 @@
 #include "bencoding.hpp"
-#include <boost/variant.hpp>
-#include <cctype>
+#include <boost/type_index.hpp>
+#include <boost/variant/get.hpp>
 #include <map>
 #include <memory>
-#include <optional>
-#include <set>
 #include <stdexcept>
 #include <string>
 #include <vector>
