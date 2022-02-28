@@ -30,7 +30,7 @@
 			"name": "Test",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/build/test/test",
+			"program": "${workspaceFolder}/build/test/unit_test",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",

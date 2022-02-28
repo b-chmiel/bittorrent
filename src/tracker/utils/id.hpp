@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace id
+namespace tracker::id
 {
 std::string generate();
 }

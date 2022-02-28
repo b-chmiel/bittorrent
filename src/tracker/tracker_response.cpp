@@ -35,7 +35,7 @@ Bencoding parseResponse(const HttpResponse& response)
     }
     catch (const std::exception& e)
     {
-        utils::logging::error("Cannot parse tracker response: " + static_cast<std::string>(response));
+        utils::logging::error("Cannot parse tracker response: " + response.toString());
         return Bencoding();
     }
 }
@@ -75,7 +75,7 @@ std::vector<Peer> parsePeers(const Bencoding& peers)
     return result;
 }
 
-TrackerResponse::operator std::string() const
+std::string TrackerResponse::toString() const
 {
     std::stringstream ss;
     ss << "{'failure reason': '" << this->failureReason << "', ";
@@ -88,7 +88,7 @@ TrackerResponse::operator std::string() const
     ss << "'peers': [";
     for (const auto& peer : this->peers)
     {
-        ss << static_cast<std::string>(peer) << ", ";
+        ss << peer.toString() << ", ";
     }
     ss << "]}";
 

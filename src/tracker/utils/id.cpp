@@ -12,7 +12,7 @@ using random_bytes_engine
     = std::independent_bits_engine<
         std::default_random_engine, CHAR_BIT, unsigned char>;
 
-std::string id::generate()
+std::string tracker::id::generate()
 {
     random_bytes_engine rbe;
     std::vector<unsigned char> data(20);

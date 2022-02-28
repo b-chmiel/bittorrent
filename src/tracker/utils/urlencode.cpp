@@ -7,7 +7,7 @@
 
 const std::set<char> additionalAllowed = { '-', '_', '.', '~' };
 
-std::string tracker::encode(const std::string& other)
+std::string tracker::urlencode::encode(const std::string& other)
 {
     std::ostringstream escaped;
     escaped.fill('0');

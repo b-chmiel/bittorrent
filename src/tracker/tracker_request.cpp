@@ -28,9 +28,9 @@ std::string TrackerRequest::toUrl(const std::string& announceUrl) const
     std::stringstream url;
     url << announceUrl;
     url << '?';
-    url << "info_hash=" << encode(this->infoHash);
+    url << "info_hash=" << urlencode::encode(this->infoHash);
     url << '&';
-    url << "peer_id=" << encode(this->peerId);
+    url << "peer_id=" << urlencode::encode(this->peerId);
     url << '&';
     url << "port=" << this->port;
     url << '&';

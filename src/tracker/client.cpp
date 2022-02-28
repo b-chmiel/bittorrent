@@ -43,8 +43,8 @@ void Client::initRequest()
     auto httpResponse = tracker::httpGet(request.toUrl(this->announceUrl));
     TrackerResponse response(httpResponse);
 
-    utils::logging::info(static_cast<std::string>(httpResponse));
-    utils::logging::info(static_cast<std::string>(response));
+    utils::logging::info(httpResponse.toString());
+    utils::logging::info(response.toString());
 }
 
 std::string Client::getEventName() const

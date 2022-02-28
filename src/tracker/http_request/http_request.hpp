@@ -8,7 +8,7 @@ namespace tracker
 class HttpResponse
 {
 public:
-    explicit operator std::string() const;
+    std::string toString() const;
 
     const uint status;
     const std::string body;

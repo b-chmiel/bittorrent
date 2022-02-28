@@ -1,4 +1,5 @@
 #include "file.hpp"
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
@@ -13,7 +14,12 @@ string file::readFile(const string& fileName)
     ifstream t(fileName);
     if (t.fail())
     {
-        throw runtime_error("Could not find file: " + fileName);
+        stringstream error;
+        error << "Could not find file: ";
+        error << fileName;
+        error << ". Current directory: ";
+        error << filesystem::current_path();
+        throw runtime_error(error.str());
     }
 
     stringstream buffer;

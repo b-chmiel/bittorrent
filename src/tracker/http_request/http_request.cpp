@@ -74,7 +74,7 @@ private:
     }
 };
 
-tracker::HttpResponse::operator std::string() const
+std::string tracker::HttpResponse::toString() const
 {
     std::stringstream ss;
     ss << "{'status': " << this->status << ", "

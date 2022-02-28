@@ -15,7 +15,7 @@ private:
 
 public:
     TrackerResponse(const HttpResponse&);
-    explicit operator std::string() const;
+    std::string toString() const;
 
     const std::string failureReason;
     const std::string warningMessage;

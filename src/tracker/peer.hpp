@@ -9,7 +9,7 @@ class Peer
 {
 public:
     Peer(const std::string& bytes);
-    explicit operator std::string() const;
+    std::string toString() const;
 
     const std::string url;
 

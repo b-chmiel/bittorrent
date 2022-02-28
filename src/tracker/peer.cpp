@@ -31,7 +31,7 @@ std::string Peer::urlFromBytes(const std::string& bytes) const
     return ip + ":" + std::to_string(port);
 }
 
-Peer::operator std::string() const
+std::string Peer::toString() const
 {
     return "{'url': '" + this->url + "'}";
 }
