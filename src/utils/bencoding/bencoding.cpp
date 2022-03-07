@@ -10,24 +10,23 @@
 using namespace utils::bencoding;
 
 Bencoding::Bencoding()
-    : data(recursive_map())
+    : data(recursive_map {})
 {
 }
 
-Bencoding::Bencoding(int data)
-    : data(data)
+Bencoding::Bencoding(int _data)
+    : data(_data)
 {
 }
 
-Bencoding::Bencoding(const std::string& data)
-    : data(data)
+Bencoding::Bencoding(const std::string& _data)
+    : data(_data)
 {
 }
 
 Bencoding::Bencoding(const std::vector<std::string>& vec)
+    : data(recursive_vector {})
 {
-    this->data = recursive_vector();
-
     for (const auto& el : vec)
     {
         boost::get<recursive_vector>(this->data).push_back(Bencoding(el));
@@ -35,9 +34,8 @@ Bencoding::Bencoding(const std::vector<std::string>& vec)
 }
 
 Bencoding::Bencoding(const std::vector<Bencoding>& vec)
+    : data(recursive_vector {})
 {
-    this->data = recursive_vector();
-
     for (const auto& el : vec)
     {
         boost::get<recursive_vector>(this->data).push_back(el);

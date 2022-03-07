@@ -7,18 +7,18 @@ using namespace std;
 using namespace torrent;
 
 Torrent::Torrent(
-    const Info& info,
-    const string& announce,
-    const vector<string>& announceList,
-    const int creationDate,
-    const string& comment,
-    const string& createdBy)
-    : info(info)
-    , announce(announce)
-    , announceList(announceList)
-    , creationDate(creationDate)
-    , comment(comment)
-    , createdBy(createdBy)
+    const Info& _info,
+    const string& _announce,
+    const vector<string>& _announceList,
+    const int _creationDate,
+    const string& _comment,
+    const string& _createdBy)
+    : info(_info)
+    , announce(_announce)
+    , announceList(_announceList)
+    , creationDate(_creationDate)
+    , comment(_comment)
+    , createdBy(_createdBy)
 {
 }
 

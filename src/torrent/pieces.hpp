@@ -7,7 +7,7 @@ namespace torrent
 class Pieces
 {
 public:
-    Pieces(std::string contents, int pieceLengthInBytes);
+    Pieces(const std::string& contents, int pieceLengthInBytes);
     Pieces(const std::string& concatenatedHashes);
     Pieces() = default;
 

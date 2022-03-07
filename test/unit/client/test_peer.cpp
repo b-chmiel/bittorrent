@@ -1,4 +1,4 @@
-#include "tracker/peer.hpp"
+#include "client/peer.hpp"
 #include <boost/test/unit_test.hpp>
 
 using namespace tracker;

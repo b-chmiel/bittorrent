@@ -1,3 +1,5 @@
+CXX=clang++
+
 .PHONY: build test
 
 build: configure
@@ -7,7 +9,7 @@ buildTest: configure
 	cmake --build ./build --target unit_test
 
 configure:
-	CXX=clang++ cmake . -G"Ninja" -DCMAKE_LINKER=/usr/bin/lld -DCMAKE_BUILD_TYPE=Debug -B ./build
+	CXX=$(CXX) cmake . -G"Ninja" -DCMAKE_LINKER=/usr/bin/lld -DCMAKE_BUILD_TYPE=Debug -B ./build
 
 test: buildTest
 	cd build && ninja check

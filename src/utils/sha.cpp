@@ -17,7 +17,7 @@ std::string sha::sha1(const std::string& str)
     {
         for (int j = sizeof(hash[0]) - 1; j >= 0; j--)
         {
-            result += (char)((ch & (255u << j * 8)) >> j * 8);
+            result += static_cast<char>((ch & (255u << j * 8)) >> j * 8);
         }
     }
 

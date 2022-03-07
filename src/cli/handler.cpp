@@ -1,6 +1,6 @@
 #include "handler.hpp"
+#include "../client/client.hpp"
 #include "../torrent/torrent.hpp"
-#include "../tracker/client.hpp"
 #include "../utils/utils.hpp"
 #include "args.hpp"
 #include <iostream>

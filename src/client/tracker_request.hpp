@@ -1,6 +1,12 @@
 #pragma once
 
+#include "../utils/bencoding/bencoding.hpp"
+#include "../utils/logging.hpp"
+#include "peer.hpp"
+#include "request/http_request.hpp"
+#include "tracker_response.hpp"
 #include <string>
+#include <vector>
 
 namespace tracker
 {
@@ -14,9 +20,10 @@ public:
         int uploadedBytes,
         int downloadedBytes,
         int leftBytes,
-        const std::string& event);
+        const std::string& event,
+        const std::string& announceUrl);
 
-    std::string toUrl(const std::string& announceUrl) const;
+    TrackerResponse send(const request::HttpRequest& request) const;
 
 private:
     const std::string infoHash;
@@ -27,5 +34,8 @@ private:
     const int leftBytes;
     const int compact = 1;
     const std::string event;
+    const std::string announceUrl;
+
+    std::string toUrl() const;
 };
 }

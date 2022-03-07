@@ -1,12 +1,12 @@
 #include "client.hpp"
 #include "../torrent/torrent.hpp"
 #include "../utils/utils.hpp"
-#include "http_request/http_request.hpp"
+#include "handshake.hpp"
+#include "request/http_request.hpp"
+#include "request/raw_request.hpp"
 #include "tracker_request.hpp"
-#include "tracker_response.hpp"
 #include "utils/id.hpp"
 #include "utils/urlencode.hpp"
-#include <sstream>
 
 using namespace tracker;
 
@@ -38,13 +38,25 @@ void Client::initRequest()
         this->uploadedBytes,
         this->downloadedBytes,
         this->leftBytes,
-        this->getEventName());
+        this->getEventName(),
+        this->announceUrl);
 
-    auto httpResponse = tracker::httpGet(request.toUrl(this->announceUrl));
-    TrackerResponse response(httpResponse);
-
-    utils::logging::info(httpResponse.toString());
-    utils::logging::info(response.toString());
+    try
+    {
+        const auto response = request.send(request::HttpRequestImpl());
+        utils::logging::info("Tracker request response: " + response.toString());
+        const Handshake handshake(this->infoHash, this->peerId);
+        for (const auto& peer : response.peers)
+        {
+            utils::logging::info("Sending handshake to: " + peer.toString());
+            handshake.send(request::RawRequestImpl(peer.ip, peer.port));
+        }
+    }
+    catch (std::exception& e)
+    {
+        utils::logging::error(e.what());
+        return;
+    }
 }
 
 std::string Client::getEventName() const
@@ -57,5 +69,7 @@ std::string Client::getEventName() const
         return "started";
     case Event::STOPPED:
         return "stopped";
+    default:
+        return "";
     }
 }

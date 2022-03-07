@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace tracker
 {
@@ -14,6 +15,10 @@ public:
     const std::string url;
 
 private:
-    std::string urlFromBytes(const std::string& bytes) const;
+    std::vector<std::string> urlSplited;
+
+public:
+    const std::string ip;
+    const int port;
 };
 }

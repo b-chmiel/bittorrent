@@ -1,13 +1,20 @@
 #include "peer.hpp"
+#include "../utils/str.hpp"
+#include <bit>
 
 using namespace tracker;
 
+std::string urlFromBytes(const std::string& bytes);
+
 Peer::Peer(const std::string& bytes)
     : url(urlFromBytes(bytes))
+    , urlSplited(utils::str::split(url, ":"))
+    , ip(urlSplited[0])
+    , port(std::stoi(urlSplited[1]))
 {
 }
 
-std::string Peer::urlFromBytes(const std::string& bytes) const
+std::string urlFromBytes(const std::string& bytes)
 {
     const int urlSize = 6;
     if (bytes.length() != urlSize)
@@ -26,7 +33,7 @@ std::string Peer::urlFromBytes(const std::string& bytes) const
         }
     }
 
-    const uint16_t port = ((uint8_t)bytes[5]) | ((uint8_t)(bytes[4]) << 8);
+    const uint16_t port = static_cast<uint16_t>((static_cast<uint8_t>(bytes[5])) | (static_cast<uint8_t>(bytes[4]) << 8));
 
     return ip + ":" + std::to_string(port);
 }

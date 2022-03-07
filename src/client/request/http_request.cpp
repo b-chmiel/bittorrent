@@ -14,26 +14,25 @@ namespace asio = boost::asio;
 namespace beast = boost::beast;
 namespace http = beast::http;
 
-using namespace tracker;
+using namespace tracker::request;
 
-class Request
+class BeastRequest
 {
 public:
-    Request(const std::string& host, const int port)
+    BeastRequest(const std::string& _host, const int _port)
         : context()
         , resolver(context)
         , stream(context)
-        , host(host)
-        , port(std::to_string(port))
+        , host(_host)
+        , port(std::to_string(_port))
     {
-
-        auto const lookup = resolver.resolve(this->host, this->port);
+        const auto lookup = resolver.resolve(this->host, this->port);
         stream.connect(lookup);
     }
 
     HttpResponse get(const std::string& url)
     {
-        auto request = prepareRequest(url);
+        const auto request = prepareRequest(url);
 
         http::write(stream, request);
         utils::logging::info("Sending request: GET " + this->host + ':' + this->port + url);
@@ -45,7 +44,7 @@ public:
         return HttpResponse { .status = response.result_int(), .body = response.body() };
     }
 
-    ~Request()
+    ~BeastRequest()
     {
         beast::error_code ec;
         this->stream.socket().shutdown(tcp::socket::shutdown_both, ec);
@@ -57,14 +56,14 @@ public:
     }
 
 private:
-    boost::asio::io_context context;
-    boost::asio::ip::tcp::resolver resolver;
-    boost::beast::tcp_stream stream;
+    asio::io_context context;
+    tcp::resolver resolver;
+    beast::tcp_stream stream;
     std::string host;
     std::string port;
     const int httpVersion = 11;
 
-    boost::beast::http::request<boost::beast::http::string_body> prepareRequest(const std::string& url) const
+    beast::http::request<beast::http::string_body> prepareRequest(const std::string& url) const
     {
         http::request<http::string_body> req { http::verb::get, url, this->httpVersion };
         req.set(http::field::host, this->host);
@@ -74,7 +73,7 @@ private:
     }
 };
 
-std::string tracker::HttpResponse::toString() const
+std::string HttpResponse::toString() const
 {
     std::stringstream ss;
     ss << "{'status': " << this->status << ", "
@@ -83,10 +82,9 @@ std::string tracker::HttpResponse::toString() const
 }
 
 // FIXME optimize url parsing
-HttpResponse tracker::httpGet(const std::string& url)
+HttpResponse HttpRequestImpl::get(const std::string& url) const
 {
     Url parsed(url);
-    Request r(parsed.host, parsed.port);
+    BeastRequest r(parsed.host, parsed.port);
     return r.get(parsed.path);
-    return {};
 }
