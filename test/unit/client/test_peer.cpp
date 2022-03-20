@@ -1,7 +1,7 @@
 #include "client/peer.hpp"
 #include <boost/test/unit_test.hpp>
 
-using namespace tracker;
+using namespace client;
 
 BOOST_AUTO_TEST_SUITE(TestPeer)
 

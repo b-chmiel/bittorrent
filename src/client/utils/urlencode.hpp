@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace tracker::urlencode
+namespace client::urlencode
 {
 std::string encode(const std::string&);
 }

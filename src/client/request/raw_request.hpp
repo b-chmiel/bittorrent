@@ -4,7 +4,7 @@
 #include <optional>
 #include <string>
 
-namespace tracker::request
+namespace client::request
 {
 struct RawRequest
 {

@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace tracker
+namespace client
 {
 enum class Event
 {

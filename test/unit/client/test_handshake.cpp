@@ -13,8 +13,8 @@ BOOST_AUTO_TEST_SUITE(TestHandshake)
 BOOST_AUTO_TEST_CASE(ToString)
 {
     const std::string infoHash = utils::sha::sha1("asdf");
-    const std::string peerId = tracker::id::generate();
-    const tracker::Handshake h(infoHash, peerId);
+    const std::string peerId = client::id::generate();
+    const client::Handshake h(infoHash, peerId);
 
     const std::string actual = h.toString();
 
@@ -30,12 +30,12 @@ BOOST_AUTO_TEST_CASE(Send)
 {
     using namespace fakeit;
 
-    Mock<tracker::request::RawRequest> mock;
+    Mock<client::request::RawRequest> mock;
     When(Method(mock, send)).Return("message");
 
     const std::string infoHash = utils::sha::sha1("asdf");
-    const std::string peerId = tracker::id::generate();
-    const tracker::Handshake h(infoHash, peerId);
+    const std::string peerId = client::id::generate();
+    const client::Handshake h(infoHash, peerId);
 
     const auto response = h.send(mock.get());
     BOOST_CHECK_EQUAL(response.value().raw, "message");

@@ -5,7 +5,7 @@
 #include <optional>
 #include <string>
 
-using namespace tracker;
+using namespace client;
 
 Handshake::Handshake(const std::string& _infoHash, const std::string& _peerId)
     : infoHash(_infoHash)

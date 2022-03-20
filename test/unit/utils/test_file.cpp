@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(Read)
 
 BOOST_AUTO_TEST_CASE(ReadFileThatDoesNotExist)
 {
-    const auto filename = tracker::id::generate();
+    const auto filename = client::id::generate();
     BOOST_CHECK_THROW(utils::file::readFile(filename), std::exception);
 }
 

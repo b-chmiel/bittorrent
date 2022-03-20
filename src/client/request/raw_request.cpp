@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 
-using namespace tracker::request;
+using namespace client::request;
 
 using boost::asio::ip::tcp;
 namespace asio = boost::asio;

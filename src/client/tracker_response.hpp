@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-namespace tracker
+namespace client
 {
 class TrackerResponse
 {

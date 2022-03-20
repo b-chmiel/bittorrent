@@ -8,7 +8,7 @@
 #include <optional>
 #include <string>
 
-namespace tracker
+namespace client
 {
 class HandshakeResponse
 {

@@ -9,7 +9,7 @@
 #include <vector>
 
 using namespace utils::bencoding;
-using namespace tracker;
+using namespace client;
 
 TrackerRequest::TrackerRequest(
     const std::string& _infoHash,

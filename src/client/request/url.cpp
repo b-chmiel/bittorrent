@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <string>
 
-using namespace tracker;
+using namespace client;
 
 Url::Url(const std::string& url)
 {

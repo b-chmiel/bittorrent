@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-using namespace tracker;
+using namespace client;
 using namespace utils::bencoding;
 
 TrackerResponse::TrackerResponse(const request::HttpResponse& r)

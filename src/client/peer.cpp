@@ -2,7 +2,7 @@
 #include "../utils/str.hpp"
 #include <bit>
 
-using namespace tracker;
+using namespace client;
 
 std::string urlFromBytes(const std::string& bytes);
 

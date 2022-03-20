@@ -3,7 +3,7 @@
 #include <boost/beast.hpp>
 #include <string>
 
-namespace tracker::request
+namespace client::request
 {
 struct HttpResponse
 {

@@ -8,7 +8,7 @@
 #include "utils/id.hpp"
 #include "utils/urlencode.hpp"
 
-using namespace tracker;
+using namespace client;
 
 std::string generateHashFromInfo(const torrent::Torrent& torrent);
 

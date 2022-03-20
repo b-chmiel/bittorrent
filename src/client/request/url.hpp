@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace tracker
+namespace client
 {
 class Url
 {

@@ -9,10 +9,6 @@
 
 using namespace cli;
 
-void Handler::help()
-{
-}
-
 void Handler::createFile(const Args& input)
 {
     std::cout << input.input << std::endl;
@@ -47,5 +43,5 @@ void Handler::seed(const Args& input)
     std::cout << "Info: filename: " << torrent.info.fileName << std::endl;
     std::cout << "Info: lengthInBytes: " << torrent.info.lengthInBytes << std::endl;
 
-    tracker::Client client(torrent);
+    client::Client client(torrent);
 }
