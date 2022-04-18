@@ -20,16 +20,19 @@ Client::Client(const torrent::Torrent& torrent)
     this->uploadedBytes = 0;
     this->downloadedBytes = 0;
     this->leftBytes = torrent.info.lengthInBytes;
-    initRequest();
+
+    const auto initResponse = this->sendInitRequest();
+    utils::logging::info("Tracker request response: " + initResponse.toString());
+    this->sendHandshake(initResponse);
 }
 
 std::string generateHashFromInfo(const torrent::Torrent& torrent)
 {
-    auto info = torrent.getInfoMap().toString();
+    const auto info = torrent.getInfoMap().toString();
     return utils::sha::sha1(info);
 }
 
-void Client::initRequest()
+TrackerResponse Client::sendInitRequest() const
 {
     TrackerRequest request(
         this->infoHash,
@@ -43,20 +46,22 @@ void Client::initRequest()
 
     try
     {
-        const auto response = request.send(request::HttpRequestImpl());
-        utils::logging::info("Tracker request response: " + response.toString());
+        return request.send(request::HttpRequestImpl());
+    }
+    catch (std::exception& e)
+    {
+        throw std::runtime_error("Could not send init request. " + std::string(e.what()));
+    }
+}
+
+void Client::sendHandshake(const TrackerResponse& response) const
+{
         const Handshake handshake(this->infoHash, this->peerId);
         for (const auto& peer : response.peers)
         {
             utils::logging::info("Sending handshake to: " + peer.toString());
             handshake.send(request::RawRequestImpl(peer.ip, peer.port));
         }
-    }
-    catch (std::exception& e)
-    {
-        utils::logging::error(e.what());
-        return;
-    }
 }
 
 std::string Client::getEventName() const

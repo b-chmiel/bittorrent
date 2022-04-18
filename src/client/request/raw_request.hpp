@@ -9,6 +9,7 @@ namespace client::request
 struct RawRequest
 {
     virtual std::optional<std::string> send(const std::string& message) const = 0;
+    virtual ~RawRequest() = default;
 };
 
 class RawRequestImpl final : public RawRequest

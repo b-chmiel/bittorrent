@@ -13,6 +13,7 @@ enum class Event
     COMPLETED
 };
 
+class TrackerResponse;
 class Client
 {
 public:
@@ -31,7 +32,8 @@ private:
     const int numWantPeers = 50;
     Event event = Event::STARTED;
 
-    void initRequest();
+    TrackerResponse sendInitRequest() const;
+    void sendHandshake(const TrackerResponse&) const;
     std::string getEventName() const;
 };
 }

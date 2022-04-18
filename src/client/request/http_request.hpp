@@ -16,6 +16,7 @@ struct HttpResponse
 struct HttpRequest
 {
     virtual HttpResponse get(const std::string& url) const = 0;
+    virtual ~HttpRequest() = default;
 };
 
 class HttpRequestImpl final : public HttpRequest

@@ -18,6 +18,6 @@ std::string client::id::generate()
     std::vector<unsigned char> data(20);
     std::generate(begin(data), end(data), std::ref(rbe));
 
-    std::string result(data.begin(), data.end());
+    const std::string result(data.begin(), data.end());
     return result;
 }

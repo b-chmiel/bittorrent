@@ -7,11 +7,11 @@ using namespace client;
 
 Url::Url(const std::string& url)
 {
-    auto splitted = utils::str::split(url, ":");
+    const auto splitted = utils::str::split(url, ":");
     if (splitted.size() == 2)
     {
         this->scheme = splitted[0];
-        auto hostPath = utils::str::split(splitted[1].substr(2), "/");
+        const auto hostPath = utils::str::split(splitted[1].substr(2), "/");
         this->host = hostPath[0];
         this->path = "/" + hostPath[1];
 
@@ -32,7 +32,8 @@ Url::Url(const std::string& url)
     {
         this->scheme = splitted[0];
         this->host = splitted[1].substr(2);
-        auto portPath = utils::str::split(splitted[2], "/");
+
+        const auto portPath = utils::str::split(splitted[2], "/");
         this->port = std::stoi(portPath[0]);
         this->path = "/" + portPath[1];
     }

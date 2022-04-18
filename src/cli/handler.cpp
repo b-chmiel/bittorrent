@@ -15,26 +15,26 @@ void Handler::createFile(const Args& input)
     std::cout << input.clientUrl << std::endl;
     std::cout << input.output << std::endl;
 
-    auto sampleFile = utils::file::readFile(input.input);
-    auto info = torrent::Info {
+    const auto sampleFile = utils::file::readFile(input.input);
+    const auto info = torrent::Info {
         .pieces = torrent::Pieces(sampleFile, 262144),
         .fileName = input.input,
         .lengthInBytes = 512
     };
 
-    auto announce = input.clientUrl;
-    auto announceList = std::vector<std::string>();
-    auto creationDate = 1644522607;
-    auto comment = "";
-    auto createdBy = "Bittorrent";
+    const auto announce = input.clientUrl;
+    const auto announceList = std::vector<std::string>();
+    const auto creationDate = 1644522607;
+    const auto comment = "";
+    const auto createdBy = "Bittorrent";
 
-    torrent::Torrent file(info, announce, announceList, creationDate, comment, createdBy);
+    const torrent::Torrent file(info, announce, announceList, creationDate, comment, createdBy);
     utils::file::saveFile(file.toString(), input.output);
 }
 
 void Handler::seed(const Args& input)
 {
-    torrent::Torrent torrent(utils::file::readFile(input.input));
+    const torrent::Torrent torrent(utils::file::readFile(input.input));
 
     std::cout << "Announce: " << torrent.announce << std::endl;
     std::cout << "Comment: " << torrent.comment << std::endl;
@@ -43,5 +43,5 @@ void Handler::seed(const Args& input)
     std::cout << "Info: filename: " << torrent.info.fileName << std::endl;
     std::cout << "Info: lengthInBytes: " << torrent.info.lengthInBytes << std::endl;
 
-    client::Client client(torrent);
+    const client::Client client(torrent);
 }
