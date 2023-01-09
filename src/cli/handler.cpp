@@ -9,7 +9,7 @@
 
 using namespace cli;
 
-void Handler::createFile(const Args& input)
+int Handler::createFile(const Args& input)
 {
     std::cout << input.input << std::endl;
     std::cout << input.clientUrl << std::endl;
@@ -30,9 +30,11 @@ void Handler::createFile(const Args& input)
 
     torrent::Torrent file(info, announce, announceList, creationDate, comment, createdBy);
     utils::file::saveFile(file.toString(), input.output);
+
+    return 0;
 }
 
-void Handler::seed(const Args& input)
+int Handler::seed(const Args& input)
 {
     torrent::Torrent torrent(utils::file::readFile(input.input));
 
@@ -44,4 +46,6 @@ void Handler::seed(const Args& input)
     std::cout << "Info: lengthInBytes: " << torrent.info.lengthInBytes << std::endl;
 
     client::Client client(torrent);
+
+    return 0;
 }

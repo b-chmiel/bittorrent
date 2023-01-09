@@ -7,6 +7,7 @@
 #include "tracker_request.hpp"
 #include "utils/id.hpp"
 #include "utils/urlencode.hpp"
+#include <backward.hpp>
 
 using namespace client;
 
@@ -41,21 +42,15 @@ void Client::initRequest()
         this->getEventName(),
         this->announceUrl);
 
-    try
+    const auto response = request.send(request::HttpRequestImpl());
+
+    utils::logging::info("Tracker request response: " + response.toString());
+
+    const Handshake handshake(this->infoHash, this->peerId);
+    for (const auto& peer : response.peers)
     {
-        const auto response = request.send(request::HttpRequestImpl());
-        utils::logging::info("Tracker request response: " + response.toString());
-        const Handshake handshake(this->infoHash, this->peerId);
-        for (const auto& peer : response.peers)
-        {
-            utils::logging::info("Sending handshake to: " + peer.toString());
-            handshake.send(request::RawRequestImpl(peer.ip, peer.port));
-        }
-    }
-    catch (std::exception& e)
-    {
-        utils::logging::error(e.what());
-        return;
+        utils::logging::info("Sending handshake to: " + peer.toString());
+        handshake.send(request::RawRequestImpl(peer.ip, peer.port));
     }
 }
 

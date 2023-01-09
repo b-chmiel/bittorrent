@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  torrent: &default
+    build: .
+
+  test: &test
+    <<: *default
+    command: make test
+
+  ci:
+    <<: *test
+    volumes: []

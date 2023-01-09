@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
+#include <boost/stacktrace.hpp>
 #include <istream>
 #include <ostream>
 #include <sstream>
@@ -51,7 +52,7 @@ public:
 
         if (ec && ec != beast::errc::not_connected)
         {
-            throw beast::system_error { ec };
+            utils::logging::stacktrace();
         }
     }
 
